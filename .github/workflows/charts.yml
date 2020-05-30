@@ -1,0 +1,37 @@
+name: 'eks-charts'
+
+on:
+  push:
+    branches:
+    - develop
+    paths:
+    - 'stable/**'
+  pull_request:
+
+jobs:
+  charts:
+    name: 'eks-charts'
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v2
+
+    - name: 'asdf:install'
+      uses: asdf-vm/actions/install@v1.0.0
+
+    - name: 'eks-charts:lint'
+      run: helm lint stable/*
+
+    - name: 'eks-charts:package'
+      run: helm package -d dist stable/*
+
+    - name: 'eks-charts:index'
+      run: helm repo index --url https://clusterfrak-dynamics.github.io/eks-charts/ .
+      working-directory: dist
+
+    - name: 'eks-charts:gh-pages'
+      uses: JamesIves/github-pages-deploy-action@releases/v3
+      with:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: dist
