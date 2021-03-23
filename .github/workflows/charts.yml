@@ -16,13 +16,13 @@ jobs:
       uses: actions/checkout@v2
 
     - name: 'asdf:install'
-      uses: asdf-vm/actions/install@v1
+      uses: asdf-vm/actions/install@v1.1.0
 
     - name: 'eks-charts:lint'
       run: helm lint stable/*
 
     - name: 'charts:releaser'
-      uses: helm/chart-releaser-action@v1
+      uses: helm/chart-releaser-action@v1.2.0
       env:
         CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       if: github.ref == 'refs/heads/main'
