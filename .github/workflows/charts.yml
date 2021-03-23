@@ -6,6 +6,7 @@ on:
     - develop
     paths:
     - 'stable/**'
+    - '.github/workflows/**'
 
 jobs:
   charts:
